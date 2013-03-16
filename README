@@ -1,0 +1,22 @@
+We extend the authn auth provider so we can easily use authn conf tags
+
+-- Apache configuration
+<Location /git_auth>
+   SetHandler git_auth
+   AuthType basic
+   AuthuserFile /tmp/a
+   AuthName "private GIT"
+   AuthBasicProvider git_auth
+   Require valid-user
+</Location>
+
+-- Compilation
+sudo apxs2 -c -i mod_git_auth.c
+
+-- git_auth.load
+LoadModule git_auth_module /usr/lib/apache2/modules/mod_git_auth.so
+
+-- git_auth.conf
+<IfModule mod_git_auth.c>
+
+</IfModule>
