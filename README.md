@@ -12,6 +12,7 @@ This module allows you to:
 * Manage multiple repositories
 * Control the access per user, per repository
 * Centralize the configuration in one file
+* Use `git-web` for repository browsing
 
 How to compile it?
 ------------------
@@ -57,5 +58,18 @@ Just add these following lines in your `httpd.conf` or `apache2.conf`:
 ```
 I assume here that all your repositories are in a `git` folder.
 
+Add the module to `/etc/apache2/mods-available/`
+------------------------------------------------
+File `git_auth.conf`:
+```
+<IfModule mod_git_auth.c>
 
-More informations about `git-http-backend` [here][https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html]
+</IfModule>
+```
+File `git_auth.load`:
+```
+LoadModule git_auth_module /usr/lib/apache2/modules/mod_git_auth.so
+```
+
+*********************
+More informations about `git-http-backend` <https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html>
