@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Git auth by lambdacrash</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/lambdacrash/git_auth">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/lambdacrash/git_auth/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/lambdacrash/git_auth/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Git auth</h1>
+          <p>Apache module allowing HTTP authentication over multiple GIT repositories</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/lambdacrash">lambdacrash</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>git_auth</h1>
+
+<p>Apache module allowing HTTP authentication over multiple GIT repositories managed by <code>git-http-backend</code>. </p>
+
+<h2>Overview</h2>
+
+<p>This module allows you to:</p>
+
+<ul>
+<li>Use HTTP authentication instead of SSH</li>
+<li>Use Apache for checking the credentials</li>
+<li>Manage multiple users</li>
+<li>Manage multiple repositories</li>
+<li>Control the access per user, per repository</li>
+<li>Centralize the configuration in one file</li>
+<li>Use <code>git-web</code> for repository browsing</li>
+</ul><h2>How to compile it?</h2>
+
+<p>In order to compile the module, you need to get the Apache dev distribution installed on your system and then just type :</p>
+
+<div class="highlight"><pre>sudo apxs2 -c -i mod_git_auth.c
+</pre></div>
+
+<p>After the compilation, your new fresh module is deployed in your Apache server.</p>
+
+<h2>How to configure the rules?</h2>
+
+<p>The module needs a configuration file containing the credentials and the description of roles like this</p>
+
+<pre><code>## Users
+# Generated using htpasswd
+test1:$apr1$uMDe/sTo$714wfmKUlQbs61BkCr83U/
+test2:$apr1$uMDe/sTo$714wfmKUlQbs61BkCr83U/
+
+## Repositories
+#git:repository_name
+git:repo1
+#list of authorized users
+user:test1
+user:test2
+
+#git:repository_name
+git:repo2
+#list of authorized users
+user:test2
+</code></pre>
+
+<h2>How to configure your Apache?</h2>
+
+<p>Just add these following lines in your <code>httpd.conf</code> or <code>apache2.conf</code>:</p>
+
+<pre><code>&lt;Location /git&gt;
+   AuthType basic
+   AuthuserFile /the/path/to/your/conf_file
+   AuthName "Private GIT"
+   AuthBasicProvider git_auth
+   Require valid-user
+&lt;/Location&gt;
+</code></pre>
+
+<p>I assume here that all your repositories are in a <code>git</code> folder.</p>
+
+<h2>Add the module to <code>/etc/apache2/mods-available/</code>
+</h2>
+
+<p>File <code>git_auth.conf</code>:</p>
+
+<pre><code>&lt;IfModule mod_git_auth.c&gt;
+
+&lt;/IfModule&gt;
+</code></pre>
+
+<p>File <code>git_auth.load</code>:</p>
+
+<pre><code>LoadModule git_auth_module /usr/lib/apache2/modules/mod_git_auth.so
+</code></pre>
+
+<hr><p>More informations about <code>git-http-backend</code> <a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html">https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html</a></p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
