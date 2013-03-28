@@ -102,8 +102,9 @@ Just copy your `.so` in `/usr/syno/apache/modules` and follow the instructions w
 Restart `apache` with `/usr/syno/etc/rc.d/S97apache-user.sh restart` and it is done!! 
 
 *********************
-More informations about `git-http-backend` <https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html>
-More informations about `qemu` <http://wiki.qemu.org/Main_Page>
-More informations about `arm` emulation with `qemu` <http://people.debian.org/~aurel32/qemu/armel/>
+* More informations about `git-http-backend` <https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html>
+* More informations about `qemu` <http://wiki.qemu.org/Main_Page>
+* More informations about `arm` emulation with `qemu` <http://people.debian.org/~aurel32/qemu/armel/>
+
 
 Special thanks to Sancho, Arnaud and Arnaud !!
