@@ -105,7 +105,46 @@ user:test2
 <pre><code>LoadModule git_auth_module /usr/lib/apache2/modules/mod_git_auth.so
 </code></pre>
 
-<hr><p>More informations about <code>git-http-backend</code> <a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html">https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html</a></p>
+<h2>Building the module for ARM target</h2>
+
+<p>First of all, you have to install <strong>Qemu</strong> and install <strong>Debian Squeeze</strong> 
+for <strong>Arm</strong> platform. The smartest way is to download <code>qcow2</code> image from <a href="http://people.debian.org/%7Eaurel32/qemu/armel/">http://people.debian.org/~aurel32/qemu/armel/</a></p>
+
+<p>So, if you run under some kind of linux distrib, just type</p>
+
+<pre><code>sudo apt-get install qemu-kvm qemu-kvm-extras
+mkdir arm
+wget http://people.debian.org/~aurel32/qemu/armel/vmlinuz-2.6.32-5-versatile
+wget http://people.debian.org/~aurel32/qemu/armel/initrd.img-2.6.32-5-versatile
+wget http://people.debian.org/~aurel32/qemu/armel/debian_squeeze_armel_standard.qcow2
+qemu-system-arm -M versatilepb -kernel vmlinuz-2.6.32-5-versatile -initrd initrd.img-2.6.32-5-versatile -hda debian_squeeze_armel_standard.qcow2 -append "root=/dev/sda1"
+</code></pre>
+
+<p>Then, enter username and password (<code>root root</code>) and type:</p>
+
+<pre><code>apt-get install apache2-prefork-dev
+cd /tmp
+git clone git://github.com/lambdacrash/git_auth.git
+cd git_auth
+apxs2 -c -i mod_git_auth.c
+</code></pre>
+
+<p>Your <code>.so</code> is located in something like <code>/usr/lib/apache2/modules/mod_git_auth.so</code>.</p>
+
+<h2>Example of deploying this module on <em>Synology 411j</em>
+</h2>
+
+<p>Just copy your <code>.so</code> in <code>/usr/syno/apache/modules</code> and follow the instructions written at the top of this document.
+Restart <code>apache</code> with <code>/usr/syno/etc/rc.d/S97apache-user.sh restart</code> and it is done!! </p>
+
+<hr><ul>
+<li>More informations about <code>git-http-backend</code> <a href="https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html">https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html</a>
+</li>
+<li>More informations about <code>qemu</code> <a href="http://wiki.qemu.org/Main_Page">http://wiki.qemu.org/Main_Page</a>
+</li>
+<li>More informations about <code>arm</code> emulation with <code>qemu</code> <a href="http://people.debian.org/%7Eaurel32/qemu/armel/">http://people.debian.org/~aurel32/qemu/armel/</a>
+</li>
+</ul><p>Special thanks to Sancho, Arnaud and Arnaud !!</p>
         </section>
 
         <aside id="sidebar">
