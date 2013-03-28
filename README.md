@@ -71,5 +71,39 @@ File `git_auth.load`:
 LoadModule git_auth_module /usr/lib/apache2/modules/mod_git_auth.so
 ```
 
+Building the module for ARM target
+----------------------------------
+First of all, you have to install **Qemu** and install **Debian Squeeze** 
+for **Arm** platform. The smartest way is to download `qcow2` image from <http://people.debian.org/~aurel32/qemu/armel/>
+
+So, if you run under some kind of linux distrib, just type
+```
+sudo apt-get install qemu-kvm qemu-kvm-extras
+mkdir arm
+wget http://people.debian.org/~aurel32/qemu/armel/vmlinuz-2.6.32-5-versatile
+wget http://people.debian.org/~aurel32/qemu/armel/initrd.img-2.6.32-5-versatile
+wget http://people.debian.org/~aurel32/qemu/armel/debian_squeeze_armel_standard.qcow2
+qemu-system-arm -M versatilepb -kernel vmlinuz-2.6.32-5-versatile -initrd initrd.img-2.6.32-5-versatile -hda debian_squeeze_armel_standard.qcow2 -append "root=/dev/sda1"
+```
+
+Then, enter username and password (`root root`) and type:
+```
+apt-get install apache2-prefork-dev
+cd /tmp
+git clone git://github.com/lambdacrash/git_auth.git
+cd git_auth
+apxs2 -c -i mod_git_auth.c
+```
+Your `.so` is located in something like `/usr/lib/apache2/modules/mod_git_auth.so`.
+
+Example of deploying this module on *Synology 411j*
+---------------------------------------------------
+Just copy your `.so` in `/usr/syno/apache/modules` and follow the instructions written at the top of this document.
+Restart `apache` with `/usr/syno/etc/rc.d/S97apache-user.sh restart` and it is done!! 
+
 *********************
 More informations about `git-http-backend` <https://www.kernel.org/pub/software/scm/git/docs/git-http-backend.html>
+More informations about `qemu` <http://wiki.qemu.org/Main_Page>
+More informations about `arm` emulation with `qemu` <http://people.debian.org/~aurel32/qemu/armel/>
+
+Special thanks to Sancho, Arnaud and Arnaud !!
